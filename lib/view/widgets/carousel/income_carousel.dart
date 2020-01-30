@@ -1,8 +1,12 @@
+import 'package:budget_app/error/error.dart';
+import 'package:budget_app/models/expense.dart';
 import 'package:budget_app/models/income.dart';
+import 'package:budget_app/util/decoration/loader.dart';
 import 'package:budget_app/view/widgets/progress_bar/income_balance_widget.dart';
 import 'package:budget_app/view/widgets/progress_bar/income_percent_balance_widget.dart';
 import 'package:budget_app/view/widgets/progress_bar/income_progress_bar_balance_widget.dart';
 import 'package:budget_app/view/widgets/progress_bar/linear_progress_bar.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +15,7 @@ class IncomeCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final incomes = Provider.of<List<Income>>(context) ?? [];
+    final expenses = Provider.of<List<Expense>>(context) ?? [];
 
     return Column(
       children: <Widget>[
@@ -41,6 +46,10 @@ class IncomeCarousel extends StatelessWidget {
             itemCount: incomes.length,
             itemBuilder: (BuildContext context, int index) {
               Income income = incomes[index];
+              double balance = 0;
+              expenses.forEach((expense){
+                balance += expense.cost;
+              });
               return Container(
                 height: 150,
                 padding: EdgeInsets.all(10),
@@ -67,9 +76,15 @@ class IncomeCarousel extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    IncomeBalanceWidget(income: income,),
-                    IncomePercentageBalanceWidget(income: income,),
-                    IncomeLinearProgressBarBalanceWidget(income: income,),
+                    IncomeBalanceWidget(
+                      income: income,balance: balance,
+                    ),
+                    IncomePercentageBalanceWidget(
+                      income: income,balance: balance,
+                    ),
+                    IncomeLinearProgressBarBalanceWidget(
+                      income: income,balance: balance,
+                    ),
                   ],
                 ),
               );

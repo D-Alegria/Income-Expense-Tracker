@@ -24,8 +24,8 @@ class ExpenseService{
     return await expenseRepository.getExpensesByUserId(userId);
   }
 
-  Future<Either<Failure, List<Expense>>> getAllByIncomeId(String incomeId) async {
-    return await expenseRepository.getExpensesByIncomeId(incomeId);
+  Stream<List<Expense>> getAllByIncomeId(String incomeId) {
+    return expenseRepository.getExpensesByIncomeId(incomeId);
   }
 
   Stream<List<Expense>> getAllByUserIdStream(String userId) {

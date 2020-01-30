@@ -7,7 +7,7 @@ abstract class ExpenseCloudDataSource {
 
   Future<List<Expense>> getExpensesByUserId(String userId);
 
-  Future<List<Expense>> getExpensesByIncomeId(String incomeId);
+  Stream<List<Expense>> getExpensesByIncomeId(String incomeId);
 
   Future<void> updateExpense(Expense expense);
 
@@ -20,9 +20,9 @@ class ExpenseCloudDataSourceImpl implements ExpenseCloudDataSource {
 
   @override
   Future<void> addExpense(Expense expense) async {
-    try{
+    try {
       await expenseCollection.add(expense.toJson());
-    }catch(e){
+    } catch (e) {
       print(e);
       throw ServerException();
     }
@@ -31,16 +31,16 @@ class ExpenseCloudDataSourceImpl implements ExpenseCloudDataSource {
   @override
   Future<List<Expense>> getExpensesByUserId(String userId) async {
     print("trying to get user expenses");
-      return await expenseCollection
-          .where("userId", isEqualTo: userId)
-          .getDocuments()
-          .then((QuerySnapshot snapshot) {
-            print('snapshot.documents${snapshot.documents}');
-        return snapshot.documents.map((doc) {
-          print('doc.data${doc.data}');
-          return Expense.fromJson(doc.data);
-        }).toList();
-      });
+    return await expenseCollection
+        .where("userId", isEqualTo: userId)
+        .getDocuments()
+        .then((QuerySnapshot snapshot) {
+      print('snapshot.documents${snapshot.documents}');
+      return snapshot.documents.map((doc) {
+        print('doc.data${doc.data}');
+        return Expense.fromJson(doc.data);
+      }).toList();
+    });
   }
 
   @override
@@ -51,7 +51,10 @@ class ExpenseCloudDataSourceImpl implements ExpenseCloudDataSource {
 
   @override
   Stream<List<Expense>> getAllByUserIdStream(String userId) {
-    return expenseCollection.where("userId", isEqualTo: userId).snapshots().map((QuerySnapshot snapshot) {
+    return expenseCollection
+        .where("userId", isEqualTo: userId)
+        .snapshots()
+        .map((QuerySnapshot snapshot) {
       print('Stream${snapshot.documents}');
       return snapshot.documents.map((doc) {
         print('Stream1${doc.data}');
@@ -61,11 +64,11 @@ class ExpenseCloudDataSourceImpl implements ExpenseCloudDataSource {
   }
 
   @override
-  Future<List<Expense>> getExpensesByIncomeId(String incomeId) async {
-    return await expenseCollection
+  Stream<List<Expense>> getExpensesByIncomeId(String incomeId) {
+    return expenseCollection
         .where("income", isEqualTo: incomeId)
-        .getDocuments()
-        .then((QuerySnapshot snapshot) {
+        .snapshots()
+        .map((QuerySnapshot snapshot) {
       print('snapshot.documents${snapshot.documents}');
       return snapshot.documents.map((doc) {
         print('doc.data${doc.data}');

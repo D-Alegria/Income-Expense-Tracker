@@ -2,6 +2,9 @@ import 'package:budget_app/models/income.dart';
 import 'package:budget_app/models/user.dart';
 import 'package:budget_app/service/income_service.dart';
 import 'package:budget_app/view/pages/main/HomePage.dart';
+import 'package:budget_app/view/pages/main/goal_page.dart';
+import 'package:budget_app/view/pages/main/savings_page.dart';
+import 'package:budget_app/view/pages/main/statistics_page.dart';
 import 'package:budget_app/view/pages/on_board/on_board_process.dart';
 import 'package:budget_app/view/pages/main/profile_page.dart';
 import 'package:budget_app/view/widgets/progress_bar/linear_progress_bar.dart';
@@ -85,7 +88,8 @@ class _MainAppState extends State<MainApp> {
           controller: controller,
           children: <Widget>[
             HomePage(),
-            Padding(padding: EdgeInsets.symmetric(vertical: 10),child: LinearProgressCard(width: 200, progressPercent: 0.3,),),
+            SavingsPage(),
+            GoalPage(),
 //                StatisticsPage(),
 //                SavingsPage(),
 //                GoalPage(),

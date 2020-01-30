@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "287589835794",
+    "firebase_url": "https://budget-app-184dd.firebaseio.com",
+    "project_id": "budget-app-184dd",
+    "storage_bucket": "budget-app-184dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287589835794:android:574a512b13da67a04464cb",
+        "android_client_info": {
+          "package_name": "com.demtem.budget_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287589835794-aa5qnvpfj2hadejnenubjtr7c9l44e40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvBmhWeQY14qNuAgSfGTy3NQtJsiMhWTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287589835794-aa5qnvpfj2hadejnenubjtr7c9l44e40.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

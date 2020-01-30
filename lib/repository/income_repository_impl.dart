@@ -82,26 +82,23 @@ class IncomeRepositoryImpl implements IncomeRepository {
   }
 
   @override
-  Future<Either<Failure, double>> getBalanceById(String id) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final expenses = await expenseService.getAllByIncomeId(id);
-        double amount = 0;
+  Stream<double> getBalanceById(String id) {
+//    try {
+//      final expenses = expenseService.getAllByIncomeId(id);
+//      double amount = 0;
+//
+//
+//        expenses.forEach((expense) {
+//          amount += expense.cost;
+//        });
+//      }
 
-        expenses.fold((ifLeft) => Left(ServerFailure()), (ifRight) {
-          if (ifRight.isNotEmpty) {
-            ifRight.forEach((expense) {
-              amount += expense.cost;
-            });
-          }
-        });
-        return Right(amount);
-      } on ServerException {
-        return Left(ServerFailure());
-      }
-    } else {
-      print("No connection");
-      return Left(ServerFailure());
-    }
+//      expenses.fold((ifLeft) => Left(ServerFailure()), (ifRight) {
+//
+//      });
+//      return Right(amount);
+//    } on ServerException {
+//      return Left(ServerFailure());
+//    }
   }
 }

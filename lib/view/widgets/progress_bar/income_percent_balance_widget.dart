@@ -12,45 +12,46 @@ class IncomePercentageBalanceWidget extends StatelessWidget {
   final incomeService = sl.get<IncomeService>();
 
   final Income income;
+  final double balance;
 
-  IncomePercentageBalanceWidget({Key key, this.income}) : super(key: key);
+  IncomePercentageBalanceWidget({Key key, this.income,this.balance}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     print('income.id${income.id}');
-    return FutureBuilder<Either<Failure, double>>(
-      future: incomeService.getBalanceById(income.id),
-      builder: (BuildContext context,
-          AsyncSnapshot<Either<Failure, double>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Loader();
-        } else {
-          if (snapshot.data == null)
-            return Center(
-              child: Text("No result"),
-            );
-          else
-            return snapshot.data
-                .fold((ifLeft) => Center(child: Text("No result")), (ifRight) {
-              print('income amount${income.amount}');
-              print('income used$ifRight');
-              print('income% ${((income.amount - ifRight) / income.amount)}');
+//    return FutureBuilder<Either<Failure, double>>(
+//      future: incomeService.getBalanceById(income.id),
+//      builder: (BuildContext context,
+//          AsyncSnapshot<Either<Failure, double>> snapshot) {
+//        if (snapshot.connectionState == ConnectionState.waiting) {
+//          return Loader();
+//        } else {
+//          if (snapshot.data == null)
+//            return Center(
+//              child: Text("No result"),
+//            );
+//          else
+//            return snapshot.data
+//                .fold((ifLeft) => Center(child: Text("No result")), (ifRight) {
+//              print('income amount${income.amount}');
+//              print('income used$ifRight');
+//              print('income% ${((income.amount - ifRight) / income.amount)}');
               return Positioned(
                 bottom: 20,
                 width: 100,
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                      '${(((income.amount - ifRight) / income.amount) * 100).floor().toString()}% remaining',
+                      '${(((income.amount - balance) / income.amount) * 100).floor().toString()}% remaining',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
                       )),
                 ),
               );
-            });
-        }
-      },
-    );
+//            });
+//        }
+//      },
+//    );
   }
 }

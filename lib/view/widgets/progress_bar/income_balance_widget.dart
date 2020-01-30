@@ -11,33 +11,34 @@ class IncomeBalanceWidget extends StatelessWidget {
   final incomeService = sl.get<IncomeService>();
 
   final Income income;
+  final double balance;
 
-  IncomeBalanceWidget({Key key, this.income}) : super(key: key);
+  IncomeBalanceWidget({Key key,this.income, this.balance}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     print('income.id${income.id}');
-    return FutureBuilder<Either<Failure, double>>(
-      future: incomeService.getBalanceById(income.id),
-      builder: (BuildContext context,
-          AsyncSnapshot<Either<Failure, double>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Loader();
-        } else {
-          if (snapshot.data == null)
-            return Center(
-              child: Text("No result"),
-            );
-          else
-            return snapshot.data
-                .fold((ifLeft) => Center(child: Text("No result")), (ifRight) {
+//    return FutureBuilder<Either<Failure, double>>(
+////      future: incomeService.getBalanceById(income.id),
+//      builder: (BuildContext context,
+//          AsyncSnapshot<Either<Failure, double>> snapshot) {
+//        if (snapshot.connectionState == ConnectionState.waiting) {
+//          return Loader();
+//        } else {
+//          if (snapshot.data == null)
+//            return Center(
+//              child: Text("No result"),
+//            );
+//          else
+//            return snapshot.data
+//                .fold((ifLeft) => Center(child: Text("No result")), (ifRight) {
               return Positioned(
                 width: 100,
                 top: 35,
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                      (income.amount - ifRight.floor()).toString(),
+                      (income.amount - balance.floor()).toString(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -45,9 +46,9 @@ class IncomeBalanceWidget extends StatelessWidget {
                   ),
                 ),
               );
-            });
-        }
-      },
-    );
+//            });
+//        }
+//      },
+//    )
   }
 }

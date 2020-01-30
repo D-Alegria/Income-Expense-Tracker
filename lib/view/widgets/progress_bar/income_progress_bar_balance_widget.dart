@@ -12,41 +12,42 @@ class IncomeLinearProgressBarBalanceWidget extends StatelessWidget {
   final incomeService = sl.get<IncomeService>();
 
   final Income income;
+  final double balance;
 
-  IncomeLinearProgressBarBalanceWidget({Key key, this.income})
+  IncomeLinearProgressBarBalanceWidget({Key key, this.income,this.balance})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     print('income.id${income.id}');
-    return FutureBuilder<Either<Failure, double>>(
-      future: incomeService.getBalanceById(income.id),
-      builder: (BuildContext context,
-          AsyncSnapshot<Either<Failure, double>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Loader();
-        } else {
-          if (snapshot.data == null)
-            return Center(
-              child: Text("No result"),
-            );
-          else
-            return snapshot.data
-                .fold((ifLeft) => Center(child: Text("No result")), (ifRight) {
-              print('income amount${income.amount}');
-              print('income used$ifRight');
-              print('income% ${((income.amount - ifRight) / income.amount)}');
+//    return FutureBuilder<Either<Failure, double>>(
+//      future: incomeService.getBalanceById(income.id),
+//      builder: (BuildContext context,
+//          AsyncSnapshot<Either<Failure, double>> snapshot) {
+//        if (snapshot.connectionState == ConnectionState.waiting) {
+//          return Loader();
+//        } else {
+//          if (snapshot.data == null)
+//            return Center(
+//              child: Text("No result"),
+//            );
+//          else
+//            return snapshot.data
+//                .fold((ifLeft) => Center(child: Text("No result")), (ifRight) {
+//              print('income amount${income.amount}');
+//              print('income used$ifRight');
+//              print('income% ${((income.amount - ifRight) / income.amount)}');
               return Positioned(
                 child: LinearProgressCard(
                   width: 100,
-                  progressPercent: ((income.amount - ifRight) / income.amount),
+                  progressPercent: ((income.amount - balance) / income.amount),
                   thickness: 3,
                 ),
                 bottom: 5,
               );
-            });
-        }
-      },
-    );
+//            });
+//        }
+//      },
+//    );
   }
 }

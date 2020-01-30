@@ -75,28 +75,26 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
   }
 
   @override
-  Future<Either<Failure, List<Expense>>> getExpensesByIncomeId(String incomeId) async {
+  Stream<List<Expense>> getExpensesByIncomeId(String incomeId)  {
     print("Im here");
-    if (await networkInfo.isConnected) {
-      try {
-        final expenses = await cloudDataSource.getExpensesByIncomeId(incomeId);
+//      try {
+        final expenses =  cloudDataSource.getExpensesByIncomeId(incomeId);
         print('incomes$expenses');
-        localDataSource.cacheExpensesByUserId(expenses);
-        return Right(expenses);
-      } on ServerException {
-        print("server");
-        return Left(ServerFailure());
-      } catch (e) {
-        print(e);
-        return Left(ServerFailure());
-      }
-    } else {
-      try {
-        final localExpenses = await localDataSource.getExpensesByUserId(incomeId);
-        return Right(localExpenses);
-      } on CacheException {
-        return Left(CacheFailure());
-      }
-    }
+        return expenses;
+//      } on ServerException {
+//        print("server");
+//        return ServerFailure();
+//      } catch (e) {
+//        print(e);
+//        return Left(ServerFailure());
+//      }
+//    } else {
+//      try {
+//        final localExpenses =  localDataSource.getExpensesByUserId(incomeId);
+//        return Right(localExpenses);
+//      } on CacheException {
+//        return Left(CacheFailure());
+//      }
+//    }
   }
 }
