@@ -4,10 +4,7 @@ import 'package:budget_app/service/income_service.dart';
 import 'package:budget_app/view/pages/main/HomePage.dart';
 import 'package:budget_app/view/pages/main/goal_page.dart';
 import 'package:budget_app/view/pages/main/savings_page.dart';
-import 'package:budget_app/view/pages/main/statistics_page.dart';
-import 'package:budget_app/view/pages/on_board/on_board_process.dart';
 import 'package:budget_app/view/pages/main/profile_page.dart';
-import 'package:budget_app/view/widgets/progress_bar/linear_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

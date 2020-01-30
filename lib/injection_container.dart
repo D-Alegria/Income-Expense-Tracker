@@ -38,7 +38,7 @@ Future<void> init() async {
   //Repository
   //income
   sl.registerLazySingleton<IncomeRepository>(() => IncomeRepositoryImpl(
-      networkInfo: sl(), cloudDataSource: sl(), localDataSource: sl(), expenseService: sl()));
+      networkInfo: sl(), cloudDataSource: sl(), localDataSource: sl()));
   //expense
   sl.registerLazySingleton<ExpenseRepository>(() => ExpenseRepositoryImpl(
       networkInfo: sl(), cloudDataSource: sl(), localDataSource: sl()));

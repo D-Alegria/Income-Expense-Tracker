@@ -1,12 +1,9 @@
-import 'package:budget_app/error/error.dart';
 import 'package:budget_app/models/expense.dart';
 import 'package:budget_app/models/income.dart';
-import 'package:budget_app/util/decoration/loader.dart';
 import 'package:budget_app/view/widgets/progress_bar/income_balance_widget.dart';
 import 'package:budget_app/view/widgets/progress_bar/income_percent_balance_widget.dart';
 import 'package:budget_app/view/widgets/progress_bar/income_progress_bar_balance_widget.dart';
-import 'package:budget_app/view/widgets/progress_bar/linear_progress_bar.dart';
-import 'package:dartz/dartz.dart';
+import 'package:budget_app/view/widgets/sections/income_description_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,12 +17,18 @@ class IncomeCarousel extends StatelessWidget {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              GestureDetector(
-                onTap: () {},
+              FlatButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => IncomeDescriptionProvider()));
+                },
+                splashColor: Colors.grey,
                 child: Text(
                   "manage",
                   style: TextStyle(
@@ -34,12 +37,12 @@ class IncomeCarousel extends StatelessWidget {
                       fontSize: 16,
                       letterSpacing: 1.0),
                 ),
-              )
+              ),
             ],
           ),
         ),
         Container(
-          height: 170.0,
+          height: 160.0,
           child: ListView.builder(
             physics: ClampingScrollPhysics(),
             scrollDirection: Axis.horizontal,
@@ -47,14 +50,16 @@ class IncomeCarousel extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               Income income = incomes[index];
               double balance = 0;
-              expenses.forEach((expense){
-                balance += expense.cost;
+              expenses.forEach((expense) {
+                if (expense.income == income.id) {
+                  balance += expense.cost;
+                }
               });
               return Container(
                 height: 150,
                 padding: EdgeInsets.all(10),
                 width: 120,
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.only(left: 10,right: 10, bottom: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   color: Colors.white,
@@ -77,13 +82,16 @@ class IncomeCarousel extends StatelessWidget {
                       height: 20,
                     ),
                     IncomeBalanceWidget(
-                      income: income,balance: balance,
+                      income: income,
+                      balance: balance,
                     ),
                     IncomePercentageBalanceWidget(
-                      income: income,balance: balance,
+                      income: income,
+                      balance: balance,
                     ),
                     IncomeLinearProgressBarBalanceWidget(
-                      income: income,balance: balance,
+                      income: income,
+                      balance: balance,
                     ),
                   ],
                 ),

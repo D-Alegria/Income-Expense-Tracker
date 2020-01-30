@@ -16,7 +16,7 @@ class _IncomeListState extends State<IncomeList> {
       itemBuilder: (context, index) {
         return ListTile(
           title: Text(incomes[index].name),
-          trailing: Text(incomes[index].availableBalance.toString()),
+          trailing: Text(incomes[index].amount.toString()),
         );
       },
     );

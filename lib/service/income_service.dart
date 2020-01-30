@@ -28,6 +28,10 @@ class IncomeService{
 //    return await incomeRepository.getBalanceById(id);
 //  }
 
+  Future<Either<Failure, void>> updateIncome(Income income) async {
+    return await incomeRepository.updateIncome(income);
+  }
+
   Stream<List<Income>> getAllByUserIdStream(String userId) {
     return incomeRepository.getAllByUserIdStream(userId);
   }

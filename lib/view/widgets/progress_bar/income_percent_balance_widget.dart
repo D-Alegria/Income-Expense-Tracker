@@ -1,12 +1,8 @@
-import 'package:budget_app/error/error.dart';
 import 'package:budget_app/models/income.dart';
 import 'package:budget_app/service/income_service.dart';
-import 'package:budget_app/util/decoration/loader.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 import '../../../injection_container.dart';
-import 'linear_progress_bar.dart';
 
 class IncomePercentageBalanceWidget extends StatelessWidget {
   final incomeService = sl.get<IncomeService>();

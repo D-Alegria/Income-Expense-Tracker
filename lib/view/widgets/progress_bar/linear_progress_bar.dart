@@ -196,7 +196,7 @@ class LinearProgressCard extends StatefulWidget {
 }
 
 class _LinearProgressCardState extends State<LinearProgressCard> {
-  double progressPercent = 0;
+//  double progressPercent = 0;
 
 
   @override
@@ -204,9 +204,9 @@ class _LinearProgressCardState extends State<LinearProgressCard> {
 
     Color foreground = Color.fromRGBO(255, 0, 0, 1);
 
-    if (progressPercent >= 0.8) {
+    if (widget.progressPercent >= 0.8) {
       foreground = Color.fromRGBO(0, 255, 0, 1);
-    } else if (progressPercent >= 0.4) {
+    } else if (widget.progressPercent >= 0.4) {
       foreground = Color.fromRGBO(255, 255, 0, 1);
     }
 

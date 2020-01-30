@@ -12,21 +12,23 @@ import 'package:provider/provider.dart';
 
 import '../../injection_container.dart';
 
-class CreateIncomeForm extends StatefulWidget {
+class UpdateIncomeForm extends StatefulWidget {
   final Function loader;
+  final Income income;
 
-  const CreateIncomeForm({Key key, this.loader}) : super(key: key);
+  const UpdateIncomeForm({Key key, this.loader, this.income}) : super(key: key);
 
   @override
-  _CreateIncomeFormState createState() => _CreateIncomeFormState();
+  _UpdateIncomeFormState createState() => _UpdateIncomeFormState();
 }
 
-class _CreateIncomeFormState extends State<CreateIncomeForm> {
+class _UpdateIncomeFormState extends State<UpdateIncomeForm> {
   final _formKey = GlobalKey<FormState>();
   final incomeService = sl.get<IncomeService>();
   String error = '';
   String name = '';
   double amount = 0.0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class _CreateIncomeFormState extends State<CreateIncomeForm> {
             SizedBox(
               height: 10,
             ),
-            Text("Create new income",
+            Text("Update income",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
             SizedBox(
               height: 10,
@@ -54,6 +56,7 @@ class _CreateIncomeFormState extends State<CreateIncomeForm> {
               height: 20,
             ),
             TextFormField(
+              initialValue: widget.income.name,
               decoration: textInputDecoration.copyWith(
                 hintText: 'name',
               ),
@@ -74,6 +77,8 @@ class _CreateIncomeFormState extends State<CreateIncomeForm> {
               height: 10,
             ),
             TextFormField(
+              initialValue: widget.income.amount.toString(),
+              enabled: false,
               decoration: textInputDecoration.copyWith(
                 hintText: 'Amount',
               ),
@@ -92,25 +97,27 @@ class _CreateIncomeFormState extends State<CreateIncomeForm> {
             Button(
               action: () async {
                 if (_formKey.currentState.validate()) {
+                  Navigator.pop(context);
+                  widget.loader();
                   print(amount);
                   print(name);
 
-                  widget.loader();
                   Income income = Income(
+                      id: widget.income.id,
                       name: name,
-                      amount: amount,
+                      amount: widget.income.amount,
                       userId: user.uid,
-                      createdAt: DateTime.now().toUtc());
+                      createdAt: widget.income.createdAt,
+                      );
                   dar.Either<Failure, void> result =
-                      await incomeService.create(Params(income: income));
+                      await incomeService.updateIncome(income);
                   result.fold((ifLeft) => print('Failure'), (ifRight) {
-                    print('Sucess');
-                    Navigator.pop(context);
+                    print('Success');
                     widget.loader();
                   });
                 }
               },
-              name: "Create",
+              name: "Update",
             ),
           ],
         ),

@@ -41,9 +41,12 @@ class IncomeCloudDataSourceImpl implements IncomeCloudDataSource {
   }
 
   @override
-  Future<void> updateIncome(Income income) {
-    // TODO: implement updateIncome
-    return null;
+  Future<void> updateIncome(Income income)async {
+    try{
+      await incomeCollection.document(income.id).updateData(income.toJson());
+    }catch(e){
+      print(e);
+    }
   }
 
   @override

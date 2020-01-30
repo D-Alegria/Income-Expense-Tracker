@@ -1,4 +1,3 @@
-import 'package:budget_app/models/enums/expenseType.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';

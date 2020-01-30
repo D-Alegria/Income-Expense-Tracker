@@ -6,7 +6,6 @@ class Income extends Equatable {
   final String id;
   final String name;
   final double amount;
-  final double availableBalance;
   final String userId;
   final DateTime createdAt;
 
@@ -14,10 +13,9 @@ class Income extends Equatable {
       {this.id,
       @required this.name,
       @required this.amount,
-      @required this.availableBalance,
       @required this.userId,
       @required this.createdAt})
-      : super([name, amount, availableBalance, userId, createdAt]);
+      : super([name, amount, userId, createdAt]);
 
   factory Income.fromDoc(DocumentSnapshot snapshot) {
     Income income = Income.fromJson(snapshot.data);
@@ -25,7 +23,6 @@ class Income extends Equatable {
         id: snapshot.documentID,
         name: income.name,
         amount: income.amount,
-        availableBalance: income.availableBalance,
         userId: income.userId,
         createdAt: income.createdAt);
   }
@@ -34,7 +31,6 @@ class Income extends Equatable {
     return Income(
         name: (jsonMap['name']),
         amount: (jsonMap['amount']),
-        availableBalance: (jsonMap['availableBalance']),
         userId: (jsonMap['userId']),
         createdAt: (jsonMap['createdAt'] as Timestamp).toDate());
   }
@@ -43,7 +39,6 @@ class Income extends Equatable {
     return {
       'name': name,
       'amount': amount,
-      'availableBalance': availableBalance,
       'userId': userId,
       'createdAt': createdAt
     };
