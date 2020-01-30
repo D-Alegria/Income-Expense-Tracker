@@ -7,6 +7,8 @@ abstract class IncomeRepository {
 
   Future<Either<Failure, List<Income>>> getIncomesByUserId(String userId);
 
+  Future<Either<Failure, void>> deleteIncome(String id);
+
   Future<Either<Failure, void>> updateIncome(Income income);
 
   Stream<double> getBalanceById(String id);

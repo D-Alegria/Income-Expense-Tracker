@@ -24,9 +24,9 @@ class IncomeService{
     return await incomeRepository.getIncomesByUserId(userId);
   }
 
-//  Stream<double> getBalanceById(String id) async {
-//    return await incomeRepository.getBalanceById(id);
-//  }
+  Future<Either<Failure, void>> deleteIncome(String id) async {
+    return await incomeRepository.deleteIncome(id);
+  }
 
   Future<Either<Failure, void>> updateIncome(Income income) async {
     return await incomeRepository.updateIncome(income);

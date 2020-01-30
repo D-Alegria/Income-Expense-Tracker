@@ -9,6 +9,8 @@ abstract class IncomeCloudDataSource {
 
   Future<void> updateIncome(Income income);
 
+  Future<void> deleteIncome(String id);
+
   Stream<List<Income>> getAllByUserIdStream(String userId);
 }
 
@@ -56,5 +58,14 @@ class IncomeCloudDataSourceImpl implements IncomeCloudDataSource {
         return Income.fromDoc(doc);
       }).toList();
     });
+  }
+
+  @override
+  Future<void> deleteIncome(String id) async {
+    try{
+      await incomeCollection.document(id).delete();
+    }catch(e){
+      print(e);
+    }
   }
 }

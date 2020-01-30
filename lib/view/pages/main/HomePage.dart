@@ -33,7 +33,6 @@ class _HomePageState extends State<HomePage> {
     final user = Provider.of<User>(context);
     final incomes = Provider.of<List<Income>>(context) ?? [];
 
-
     void _showAddPanel(List<Income> incomes) {
       showModalBottomSheet(
         isScrollControlled: true,
@@ -53,56 +52,56 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    return loading ? Loader() :StreamProvider<List<Expense>>.value(
-      value: expenseService.getAllByUserIdStream(user.uid),
-      child: Scaffold(
-        body: SafeArea(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 22, top: 25),
-              child: RichText(
-                  text: TextSpan(
-                      text: 'welcome',
-                      style: TextStyle(
-                        fontSize: 13.0,
-                        color: Colors.black,
+    return loading
+        ? Loader()
+        : StreamProvider<List<Expense>>.value(
+            value: expenseService.getAllByUserIdStream(user.uid),
+            child: Scaffold(
+              body: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: 22, top: 25),
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'welcome',
+                          style: TextStyle(
+                            fontSize: 13.0,
+                            color: Colors.black,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: ' ',
+                            ),
+                            TextSpan(
+                              text: user.name ?? 'User',
+                              style: TextStyle(
+                                fontSize: 25.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      children: <TextSpan>[
-                    TextSpan(
-                      text: ' ',
                     ),
-                    TextSpan(
-                        text: user.name ?? 'User',
-                        style: TextStyle(
-                            fontSize: 25.0, fontWeight: FontWeight.bold))
-                  ])),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            IncomeCarousel(),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Button(
-                action: () async {
-//                  toggleLoader();
-//                  dar.Either<Failure, List<Income>> incomes =
-//                  await incomeService.getAllByUserId(user.uid);
-//                  toggleLoader();
-//                  incomes.fold((ifLeft) {print('ifLeft$ifLeft');}, (ifRight) {_showAddPanel(ifRight);});
-                _showAddPanel(incomes);
-                },
-                name: "Add Expense",
+                    IncomeCarousel(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Button(
+                        action: () async {
+                          _showAddPanel(incomes);
+                        },
+                        name: "Add Expense",
+                      ),
+                    ),
+                    Expanded(
+                      child: ExpenseSection(),
+                    )
+                  ],
+                ),
               ),
             ),
-            Expanded(
-              child: ExpenseSection(),
-            )
-          ],
-        )),
-      ),
-    );
+          );
   }
 }

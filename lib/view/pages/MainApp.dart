@@ -24,10 +24,6 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
 
-//    if (incomes == null){
-//      return OnBoardPage();
-//    }else{
-
     return StreamProvider<List<Income>>.value(
       value: incomeService.getAllByUserIdStream(user.uid),
       child: Scaffold(

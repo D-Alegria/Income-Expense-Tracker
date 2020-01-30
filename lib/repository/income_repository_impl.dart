@@ -66,15 +66,8 @@ class IncomeRepositoryImpl implements IncomeRepository {
   Stream<List<Income>> getAllByUserIdStream(String userId) {
     final incomes = cloudDataSource.getAllByUserIdStream(userId);
     print('incomes$incomes');
-//        localDataSource.cacheIncomesByUserId(incomes);
     return incomes;
-//    } on ServerException {
-//      print("server");
-////        return Left(ServerFailure());
-//    } catch (e) {
-//      print(e);
-////        return Left(ServerFailure());
-//    }
+
   }
 
   @override
@@ -88,6 +81,21 @@ class IncomeRepositoryImpl implements IncomeRepository {
     if (await networkInfo.isConnected) {
       try {
         final newIncome = await cloudDataSource.updateIncome(income);
+        return Right(newIncome);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      print("No connection");
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteIncome(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final newIncome = await cloudDataSource.deleteIncome(id);
         return Right(newIncome);
       } on ServerException {
         return Left(ServerFailure());
