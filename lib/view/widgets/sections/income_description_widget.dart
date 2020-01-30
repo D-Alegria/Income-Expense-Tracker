@@ -7,7 +7,6 @@ import 'package:budget_app/models/user.dart';
 import 'package:budget_app/service/expense_service.dart';
 import 'package:budget_app/service/income_service.dart';
 import 'package:budget_app/util/decoration/constants.dart';
-import 'package:budget_app/util/decoration/loader.dart';
 import 'package:budget_app/view/forms/update_income_form.dart';
 import 'package:budget_app/view/widgets/progress_bar/linear_progress_bar.dart';
 import 'package:dartz/dartz.dart' as dar;
@@ -17,6 +16,11 @@ import 'package:provider/provider.dart';
 import '../../../injection_container.dart';
 
 class IncomeDescriptionWidget extends StatefulWidget {
+
+  final Function loader;
+
+  const IncomeDescriptionWidget({Key key, this.loader}) : super(key: key);
+
   @override
   _IncomeDescriptionWidgetState createState() =>
       _IncomeDescriptionWidgetState();
@@ -25,13 +29,9 @@ class IncomeDescriptionWidget extends StatefulWidget {
 class _IncomeDescriptionWidgetState extends State<IncomeDescriptionWidget> {
   final expenseService = sl.get<ExpenseService>();
   final incomeService = sl.get<IncomeService>();
-  bool loading = false;
 
-  void toggleLoader() {
-    setState(() {
-      loading = !loading;
-    });
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +69,12 @@ class _IncomeDescriptionWidgetState extends State<IncomeDescriptionWidget> {
                   ),
                   onPressed: () async {
                     Navigator.pop(context);
-                    toggleLoader();
+                    widget.loader();
                     dar.Either<Failure, void> result =
                         await incomeService.deleteIncome(income.id);
                     result.fold((ifLeft) => print('Failure'), (ifRight) {
                       print('Success');
-                      toggleLoader();
+                      widget.loader();
                     });
                   },
                 )
@@ -83,7 +83,7 @@ class _IncomeDescriptionWidgetState extends State<IncomeDescriptionWidget> {
           });
     }
 
-    void _showAddPanel(Income income) {
+    void _showUpdatePanel(Income income) {
       showModalBottomSheet(
           isScrollControlled: true,
           context: context,
@@ -94,16 +94,14 @@ class _IncomeDescriptionWidgetState extends State<IncomeDescriptionWidget> {
                     bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: UpdateIncomeForm(
                   income: income,
-                  loader: toggleLoader,
+                  loader: widget.loader,
                 ),
               ),
             );
           });
     }
 
-    return loading
-        ? Loader()
-        : StreamProvider<List<Expense>>.value(
+    return StreamProvider<List<Expense>>.value(
             value: expenseService.getAllByUserIdStream(user.uid),
             child: ListView.builder(
               itemCount: incomes.length,
@@ -183,7 +181,7 @@ class _IncomeDescriptionWidgetState extends State<IncomeDescriptionWidget> {
                         children: <Widget>[
                           FlatButton(
                             onPressed: () {
-                              _showAddPanel(income);
+                              _showUpdatePanel(income);
                             },
                             child: Text("update"),
                             splashColor: Colors.grey,

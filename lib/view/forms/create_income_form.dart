@@ -92,6 +92,8 @@ class _CreateIncomeFormState extends State<CreateIncomeForm> {
             Button(
               action: () async {
                 if (_formKey.currentState.validate()) {
+                  Navigator.pop(context);
+                  widget.loader();
                   print(amount);
                   print(name);
 
@@ -105,7 +107,6 @@ class _CreateIncomeFormState extends State<CreateIncomeForm> {
                       await incomeService.create(Params(income: income));
                   result.fold((ifLeft) => print('Failure'), (ifRight) {
                     print('Sucess');
-                    Navigator.pop(context);
                     widget.loader();
                   });
                 }
