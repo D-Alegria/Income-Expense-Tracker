@@ -1,6 +1,8 @@
+import 'package:budget_app/models/user.dart';
 import 'package:budget_app/service/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final AuthService _authService = AuthService();
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
     return Scaffold(
       body: ListView(
         children: <Widget>[
@@ -22,14 +25,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 195,
                   margin: EdgeInsets.all(17),
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Color.fromRGBO(243, 243, 243, 1),
                       boxShadow: [
                         BoxShadow(
                             color: Color.fromRGBO(255, 255, 255, 0.77),
                             blurRadius: 6,
                             offset: Offset(-3, -3)),
                         BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.44),
+                            color: Color.fromRGBO(0, 0, 0, 0.16),
                             blurRadius: 6,
                             offset: Offset(3, 3))
                       ],
@@ -45,14 +48,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: 80,
 //                    margin: EdgeInsets.only(top: 60, left: 40),
                         decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Color.fromRGBO(243, 243, 243, 1),
                             boxShadow: [
                               BoxShadow(
                                   color: Color.fromRGBO(255, 255, 255, 0.77),
                                   blurRadius: 6,
                                   offset: Offset(-3, -3)),
                               BoxShadow(
-                                  color: Color.fromRGBO(0, 0, 0, 0.44),
+                                  color: Color.fromRGBO(0, 0, 0, 0.16),
                                   blurRadius: 6,
                                   offset: Offset(3, 3))
                             ],
@@ -71,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: TextStyle(),
                             ),
                             Text(
-                              "David White",
+                              user.name??"User",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                   color: Colors.black,
@@ -90,47 +93,47 @@ class _ProfilePageState extends State<ProfilePage> {
           Column(
             children: <Widget>[
 //              Container(child: ListTile(leading: Icon(Icons.account_circle),),decoration: BoxDecoration(color: Colors.white),)
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 17),
-                      width: 45,
-                      height: 45,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Color.fromRGBO(255, 255, 255, 0.77),
-                                blurRadius: 6,
-                                offset: Offset(-3, -3)),
-                            BoxShadow(
-                                color: Color.fromRGBO(0, 0, 0, 0.44),
-                                blurRadius: 6,
-                                offset: Offset(3, 3))
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                    ),
-                    Expanded(child: Container(margin: EdgeInsets.only(left: 10),child: Text("Availability",style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2,
-                        fontSize: 18),),),),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment:MainAxisAlignment.spaceBetween,children: <Widget>[
-                      Text(
-                        "On",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
-                            fontSize: 18),
-                      ),
-                      Icon(Icons.arrow_forward_ios)
-                    ],),)
-                  ],
-                ),
-              ),
+//              Container(
+//                child: Row(
+//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                  children: <Widget>[
+//                    Container(
+//                      margin: EdgeInsets.only(left: 17),
+//                      width: 45,
+//                      height: 45,
+//                      decoration: BoxDecoration(
+//                          color: Colors.white,
+//                          boxShadow: [
+//                            BoxShadow(
+//                                color: Color.fromRGBO(255, 255, 255, 0.77),
+//                                blurRadius: 6,
+//                                offset: Offset(-3, -3)),
+//                            BoxShadow(
+//                                color: Color.fromRGBO(0, 0, 0, 0.44),
+//                                blurRadius: 6,
+//                                offset: Offset(3, 3))
+//                          ],
+//                          borderRadius: BorderRadius.all(Radius.circular(5))),
+//                    ),
+//                    Expanded(child: Container(margin: EdgeInsets.only(left: 10),child: Text("Availability",style: TextStyle(
+//                        fontWeight: FontWeight.bold,
+//                        letterSpacing: 2,
+//                        fontSize: 18),),),),
+//                    Container(
+//                      child: Row(
+//                        mainAxisAlignment:MainAxisAlignment.spaceBetween,children: <Widget>[
+//                      Text(
+//                        "On",
+//                        style: TextStyle(
+//                            fontWeight: FontWeight.bold,
+//                            letterSpacing: 2,
+//                            fontSize: 18),
+//                      ),
+//                      Icon(Icons.arrow_forward_ios)
+//                    ],),)
+//                  ],
+//                ),
+//              ),
               SizedBox(height: 10,),
               ListTile(title: Text("Logout"),leading: Icon(Icons.person),onTap: ()async{
                 await _authService.signOut();

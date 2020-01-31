@@ -71,12 +71,6 @@ class IncomeRepositoryImpl implements IncomeRepository {
   }
 
   @override
-  Stream<double> getBalanceById(String id) {
-    // TODO: implement getBalanceById
-    return null;
-  }
-
-  @override
   Future<Either<Failure, void>> updateIncome(Income income) async {
     if (await networkInfo.isConnected) {
       try {

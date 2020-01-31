@@ -8,7 +8,6 @@ import 'package:budget_app/repository/contracts/expense_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 
-
 class ExpenseRepositoryImpl implements ExpenseRepository {
   final NetworkInfo networkInfo;
   final ExpenseCloudDataSource cloudDataSource;
@@ -63,38 +62,52 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
 
   @override
   Stream<List<Expense>> getAllByUserIdStream(String userId) {
-
-    try{
+    try {
       final incomes = cloudDataSource.getAllByUserIdStream(userId);
       print('incomes$incomes');
       return incomes;
-    }catch (e){
+    } catch (e) {
       print('Stream$e');
       throw ServerException();
     }
   }
 
   @override
-  Stream<List<Expense>> getExpensesByIncomeId(String incomeId)  {
+  Stream<List<Expense>> getExpensesByIncomeId(String incomeId) {
     print("Im here");
-//      try {
-        final expenses =  cloudDataSource.getExpensesByIncomeId(incomeId);
-        print('incomes$expenses');
-        return expenses;
-//      } on ServerException {
-//        print("server");
-//        return ServerFailure();
-//      } catch (e) {
-//        print(e);
-//        return Left(ServerFailure());
-//      }
-//    } else {
-//      try {
-//        final localExpenses =  localDataSource.getExpensesByUserId(incomeId);
-//        return Right(localExpenses);
-//      } on CacheException {
-//        return Left(CacheFailure());
-//      }
-//    }
+    final expenses = cloudDataSource.getExpensesByIncomeId(incomeId);
+    print('incomes$expenses');
+    return expenses;
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteExpense(String id) async{
+    if (await networkInfo.isConnected) {
+      try {
+        final newExpense = await cloudDataSource.deleteExpense(id);
+        return Right(newExpense);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      print("No connection");
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateExpense(Expense expense) async {
+    if (await networkInfo.isConnected) {
+      try {
+        print("Conbetero");
+        final newExpense = await cloudDataSource.updateExpense(expense);
+        return Right(newExpense);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      print("No connection");
+      return Left(ServerFailure());
+    }
   }
 }

@@ -21,7 +21,7 @@ class IncomeBalanceWidget extends StatelessWidget {
       child: Align(
         alignment: Alignment.center,
         child: Text(
-          (income.amount - balance.floor()).toString(),
+          'N${(income.amount - balance).floor().toString()}',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,

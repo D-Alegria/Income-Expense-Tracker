@@ -11,7 +11,5 @@ abstract class IncomeRepository {
 
   Future<Either<Failure, void>> updateIncome(Income income);
 
-  Stream<double> getBalanceById(String id);
-
   Stream<List<Income>> getAllByUserIdStream(String userId);
 }

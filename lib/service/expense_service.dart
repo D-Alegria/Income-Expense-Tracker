@@ -24,6 +24,14 @@ class ExpenseService{
     return await expenseRepository.getExpensesByUserId(userId);
   }
 
+  Future<Either<Failure, void>> deleteExpense(String id) async {
+    return await expenseRepository.deleteExpense(id);
+  }
+
+  Future<Either<Failure, void>> updateExpense(Expense expense) async {
+    return await expenseRepository.updateExpense(expense);
+  }
+
   Stream<List<Expense>> getAllByIncomeId(String incomeId) {
     return expenseRepository.getExpensesByIncomeId(incomeId);
   }

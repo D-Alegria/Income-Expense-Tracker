@@ -97,7 +97,6 @@ class _CreateIncomeFormState extends State<CreateIncomeForm> {
                   print(amount);
                   print(name);
 
-                  widget.loader();
                   Income income = Income(
                       name: name,
                       amount: amount,

@@ -14,9 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../injection_container.dart';
+import 'expense_description_provider.dart';
 
 class IncomeDescriptionWidget extends StatefulWidget {
-
   final Function loader;
 
   const IncomeDescriptionWidget({Key key, this.loader}) : super(key: key);
@@ -29,9 +29,6 @@ class IncomeDescriptionWidget extends StatefulWidget {
 class _IncomeDescriptionWidgetState extends State<IncomeDescriptionWidget> {
   final expenseService = sl.get<ExpenseService>();
   final incomeService = sl.get<IncomeService>();
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -102,114 +99,144 @@ class _IncomeDescriptionWidgetState extends State<IncomeDescriptionWidget> {
     }
 
     return StreamProvider<List<Expense>>.value(
-            value: expenseService.getAllByUserIdStream(user.uid),
-            child: ListView.builder(
-              itemCount: incomes.length,
-              itemBuilder: (BuildContext context, int index) {
-                final expenses = Provider.of<List<Expense>>(context) ?? [];
+      value: expenseService.getAllByUserIdStream(user.uid),
+      child: ListView.builder(
+        itemCount: incomes.length,
+        itemBuilder: (BuildContext context, int index) {
+          final expenses = Provider.of<List<Expense>>(context) ?? [];
 
-                Income income = incomes[index];
-                double balance = 0;
-                expenses.forEach((expense) {
-                  if (expense.income == income.id) {
-                    balance += expense.cost;
-                  }
-                });
+          Income income = incomes[index];
+          double balance = 0;
+          expenses.forEach((expense) {
+            if (expense.income == income.id) {
+              balance += expense.cost;
+            }
+          });
 
-                return Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: containerDecoration,
-                  margin: EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        incomes[index].name,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Amount ${income.amount}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Balance ${income.amount - balance}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 25),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          '${(((income.amount - balance) / income.amount) * 100).toString()}% remaining',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: LinearProgressCard(
-                          width: double.infinity,
-                          progressPercent:
-                              ((income.amount - balance) / income.amount),
-                          thickness: 3,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          FlatButton(
-                            onPressed: () {
-                              _showUpdatePanel(income);
-                            },
-                            child: Text("update"),
-                            splashColor: Colors.grey,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          RaisedButton(
-                            color: Colors.red,
-                            splashColor: Colors.deepOrangeAccent,
-                            child: Text(
-                              "Delete",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Colors.white),
-                            ),
-                            onPressed: () {
-                              _showDeleteModal(income);
-                            },
-                          ),
-                        ],
-                      )
-                    ],
+
+          print("I expense(jce ${income}income");
+          print("I expense(ewwe ${incomes}income");
+
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            decoration: containerDecoration,
+            margin: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  incomes[index].name,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Amount N${income.amount.floor()}',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
-                );
-              },
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Balance N${(income.amount - balance).floor()}',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    '${(((income.amount - balance) / income.amount) * 100).floor()}% remaining',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: LinearProgressCard(
+                    width: double.infinity,
+                    progressPercent:
+                        ((income.amount - balance) / income.amount),
+                    thickness: 3,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ExpenseDescriptionProvider(
+                              income: income,
+                              loader: widget.loader,
+                              incomes: incomes,
+                            ),
+                          ),
+                        );
+                      },
+                      splashColor: Colors.grey,
+                      child: Text(
+                        "manage",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    FlatButton(
+                      onPressed: () {
+                        _showUpdatePanel(income);
+                      },
+                      child: Text(
+                        "update",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                      splashColor: Colors.grey,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    RaisedButton(
+                      color: Colors.red,
+                      splashColor: Colors.deepOrangeAccent,
+                      child: Text(
+                        "Delete",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.white),
+                      ),
+                      onPressed: () {
+                        _showDeleteModal(income);
+                      },
+                    ),
+                  ],
+                )
+              ],
             ),
           );
+        },
+      ),
+    );
   }
 }

@@ -15,7 +15,7 @@ class Income extends Equatable {
       @required this.amount,
       @required this.userId,
       @required this.createdAt})
-      : super([name, amount, userId, createdAt]);
+      : super([id, name, amount, userId, createdAt]);
 
   factory Income.fromDoc(DocumentSnapshot snapshot) {
     Income income = Income.fromJson(snapshot.data);

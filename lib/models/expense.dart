@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 class Expense extends Equatable {
+  final String id;
   final String name;
   final double cost;
   final String income;
@@ -11,13 +12,25 @@ class Expense extends Equatable {
   final DateTime createdAt;
 
   Expense(
-      {@required this.name,
+      {this.id,@required this.name,
       @required this.cost,
       @required this.income,
       @required this.userId,
       @required this.expenseType,
       @required this.createdAt})
-      : super([name, cost, income, userId, expenseType, createdAt]);
+      : super([id, name, cost, income, userId, expenseType, createdAt]);
+
+  factory Expense.fromDoc(DocumentSnapshot snapshot) {
+    Expense expense = Expense.fromJson(snapshot.data);
+    return Expense(
+        id: snapshot.documentID,
+        name: expense.name,
+        cost: expense.cost,
+        income: expense.income,
+        expenseType: expense.expenseType,
+        userId: expense.userId,
+        createdAt: expense.createdAt);
+  }
 
   factory Expense.fromJson(Map<String, dynamic> jsonMap) {
     return Expense(

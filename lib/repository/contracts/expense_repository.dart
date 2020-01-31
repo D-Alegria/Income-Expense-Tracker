@@ -7,6 +7,10 @@ abstract class ExpenseRepository {
 
   Future<Either<Failure, List<Expense>>> getExpensesByUserId(String userId);
 
+  Future<Either<Failure, void>> deleteExpense(String id);
+
+  Future<Either<Failure, void>> updateExpense(Expense expense);
+
   Stream<List<Expense>> getExpensesByIncomeId(String incomeId);
 
   Stream<List<Expense>> getAllByUserIdStream(String userId);
